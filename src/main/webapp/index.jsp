@@ -281,7 +281,8 @@
     //新增模态框：点击保存，保存员工。
     $("#emp_save_btn").click(function(){
         //1、模态框中填写的表单数据提交给服务器进行保存
-        //先对要提交给服务器的数据进行校验
+        //先对要提交给服务器的数据进行校验(前端校验+后端校验JSR303)
+        //因为前端校验只用于提升体验，无法阻拦故意非法的请求
         if(!validate_add_form()){
             return false;
         };
@@ -301,7 +302,15 @@
                     //2、来到最后一页，显示刚才保存的数据
                     to_page(totalRecord); //不用totalPages，因为新增一条导致页数增加时totalPages并不会增加
                 }else{
-
+                    //显示后端校验失败返回的信息
+                    if(undefined != result.extend.errorFields.email){
+                        //显示邮箱错误信息
+                        show_validate_msg("#email_add_input", "error", result.extend.errorFields.email);
+                    }
+                    if(undefined != result.extend.errorFields.empName){
+                        //显示员工名字的错误信息
+                        show_validate_msg("#empName_add_input", "error", result.extend.errorFields.empName);
+                    }
                 }
             }
         });
