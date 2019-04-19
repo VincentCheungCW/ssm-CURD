@@ -18,6 +18,11 @@ import java.util.List;
 /**
  * 处理员工CRUD请求
  */
+//  restful URI:
+//  /emps/{id}   GET     查询员工
+//  /emps        POST    保存员工
+//  /emps/{id}   PUT     修改员工
+//  /emps/{id}   DELETE  删除员工
 
 @Controller
 public class EmployeeController {
@@ -76,7 +81,27 @@ public class EmployeeController {
         employeeService.saveEmp(employee);
         return Msg.success();
     }
-
+    /**
+     * 检查用户名是否可用
+     * @param empName
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/checkuser",method = RequestMethod.POST)
+    public Msg checkuser(@RequestParam("empName")String empName){
+        //先判断用户名是否是合法的表达式(java正则表达式)
+        String regx = "(^[a-zA-Z0-9_-]{6,16}$)|(^[\u2E80-\u9FFF]{2,5})";
+        if(!empName.matches(regx)){
+            return Msg.fail().add("va_msg", "用户名必须是6-16位数字和字母的组合或者2-5位中文");
+        }
+        //数据库用户名重复校验
+        boolean b = employeeService.checkUser(empName);
+        if(b){
+            return Msg.success();
+        }else{
+            return Msg.fail().add("va_msg", "用户名不可用");
+        }
+    }
 
 
 
