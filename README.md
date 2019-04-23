@@ -1,5 +1,5 @@
-# ssm-CRUD
-A RESTful WebService using Spring+SpringMVC+Mybatis, featuring CRUD
+# ssm-crud
+A RESTful WebService using Spring+SpringMVC+Mybatis, featuring CRUD.
 
 ## 功能点
 - 分页
